@@ -123,6 +123,7 @@ An endpoint which given a valid lisp program as a string will attempt to convert
             ; comment
         </td>
         <td>
+            <b>leave helpful messages in your code</b>
             <p>any string preceeded by a semicolon and terminated with a new-line will be ignored by the compiler</p>
         </td>
     </tr>
@@ -132,6 +133,7 @@ An endpoint which given a valid lisp program as a string will attempt to convert
               <i>body…</i>)
         </td>
         <td>
+            <b>define a function by name</b>
             <p><i>function-name</i>: Function names can contain letters, digits, underscores, and dollar signs (same rules as variables). They must not begin with a number.<br /><i>arguments</i>: The parentheses may include parameter names separated by spaces
             <br /><i>body</i>: May contain one or more instructions to be executed when the function is called</p>
         </td>
@@ -143,6 +145,7 @@ An endpoint which given a valid lisp program as a string will attempt to convert
               <i>actions-when-false</i> ;optional)
         </td>
         <td>
+            <b>execute code conditionally</b>
             <p><i>true-or-false-test</i>: Any expression that evaluates to truthy/falsey javascript values
             <br /><i>actions-when-true</i>: Must contain one (or more nested) instructions to be executed when condition evaluates to true
             <br /><i>actions-when-false</i>: Optional. Must contain one (or more nested) instructions to be executed when condition evaluates to false</p>
@@ -154,6 +157,7 @@ An endpoint which given a valid lisp program as a string will attempt to convert
               <i>body…</i>)
         </td>
         <td>
+            <b>define anonymous function</b>
             <i>arguments</i>: The parentheses may include parameter names separated by spaces
             <br /><i>body</i>: May contain one or more instructions to be executed when the function is called</p>
         </td>
@@ -163,6 +167,7 @@ An endpoint which given a valid lisp program as a string will attempt to convert
             (let <i>varlist</i> <i>body…</i>)
         </td>
         <td>
+            <b>declare one or more scoped variables by name</b>
             <i>varlist</i>: the varlist is a list containing one or more variable declarations in the form (<i>variable value</i>). <i>value</i> an expression or literal. When supplying an expression, it should resolve to a literal during runtime such as a boolean, string, number, JavaScript Array or JavaScript Object<br />
             <i>body</i>: May contain one or more instructions to be executed inside the scope of the let</p>
             <p>e.g. If the varlist is composed of two-element lists, the template for the let expression looks like this
@@ -181,6 +186,7 @@ An endpoint which given a valid lisp program as a string will attempt to convert
               <i>body…</i>)
         </td>
         <td>
+            <b>execute something(s) more than once</b>
             <p><i>variable</i>: For every iteration, the value of the next property is assigned to the variable<br />
             <i>iterable</i>: Any macro that resolves to a javascript object that has iterable properties or a javascript literal that has iterable properties<br />
             <i>body</i>: May contain one or more instructions to be executed each time the loop is executed</p>
@@ -192,6 +198,7 @@ An endpoint which given a valid lisp program as a string will attempt to convert
               <i>body…</i>)
         </td>
         <td>
+            <b>execute something(s) more than once</b>
             <p><i>variable</i>: For every iteration, the next value in the range is assigned to the variable<br />
             <i>number1</i>: the starting range value. usually 0 or 1
             <i>number2</i>: the ending range value<br />
@@ -212,6 +219,7 @@ An endpoint which given a valid lisp program as a string will attempt to convert
             (setq <i>variable-name</i> <i>value</i>)
         </td>
         <td>
+            <b>declare a variable by name</b>
             <p><i>variable-name</i>: Variable names can contain letters, digits, underscores, and dollar signs (same rules as functions). They must not begin with a number<br />
             <i>value</i>: an expression or literal. When supplying an expression, it must resolve to a literal during runtime such as a boolean, string, number, JavaScript Array or JavaScript Object</p>
         </td>
@@ -221,7 +229,7 @@ An endpoint which given a valid lisp program as a string will attempt to convert
             (write <i>value</i>)
         </td>
         <td>
-            <h4>writes a string to stdout</h4>
+            <b>writes a string to stdout</b>
             <p><i>value</i>: an expression or string literal. When supplying an expression, it must resolve to a string literal during runtime</p>
         </td>
     </tr>
