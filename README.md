@@ -99,7 +99,7 @@ An endpoint which given a valid lisp program as a string will attempt to convert
             values (by assignment or expression)
         </td>
         <td>
-            a value can be an expression or literal. When supplying a macro expression, it should resolve to a literal during runtime such as a boolean, string, number, JavaScript Array or JavaScript Object. Strings that contain spaces must use double quotes. escaping double quotes is permitted. For strings that do not contain spaces single quotes are acceptable.
+            a value can be an expression or literal. When supplying a macro expression, it should resolve to a literal during runtime such as a boolean, string, number, JavaScript Array or JavaScript Object. Strings that contain spaces must use double quotes. escaping double quotes and parentheses is permitted. For strings that do not contain spaces or parentheses, single quotes are acceptable.
         </td>
     </tr>
     <tr>
@@ -248,6 +248,6 @@ An endpoint which given a valid lisp program as a string will attempt to convert
  * plus(+) operator can be used for string concatenation
  * tests are very incomplete
 
-While creating this I encountered a couple of minor challenges and a couple of larger ones. First I tried to use generator functions to step through the list heirarchy but couldn't fully wrap my head around it so I went with recursion. Next I spent some time trying to create a regex that would preserve whitespace in strings. That wasn't fun so I made a loop and left a TODO to optimize the tokenize function later. The most challenging part of this project has been trying to comprehend the boundary of syntax between the lispyness and javascript. There are too many combinations to check manually so I think if I had more free time, I'd make a script that generates tests for every combination of macros, operators and literals (2 levels deep), as well as systematically testing for injected javascript.
+While creating this I encountered a couple of minor challenges and a couple of larger ones. First I tried to use generator functions to step through the list heirarchy but couldn't fully wrap my head around it so I went with recursion. Next I spent some time trying to create a regex that would preserve whitespace in strings but ended up with a loop that tokenized in a single pass. The most challenging part of this project has been trying to comprehend the boundary of syntax between the lispyness and javascript. There are too many combinations to check manually so I think if I had more free time, I'd make a script that generates tests for every combination of macros, operators and literals (2 levels deep), as well as systematically testing for injected javascript.
 
 a major blunder in this implementation was to put all the parsing logic in the transpiling library. If I ever rewrite this, it will be in golang and the parser will perform the syntax validation and produce a far more robust AST.

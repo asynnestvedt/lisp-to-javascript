@@ -12,29 +12,40 @@ const strip = source => source.replace(/^\s+?;.*\n?/m, "")
  * @param {string} source 
  */
 const tokenize = source => {
-    let tokens = []
+    const tokens = []
     let acc = ""
-    let escape = false
-    let quoted = false
+    let escape = quoted = false
+    let parenCount = 0
 
-    // TODO: rewrite replace + split in loop below for single pass performance
-    source = source.replace(/\(/g, " ( ").replace(/\)/g, " ) ").trim().split(/\s+/)
+    // TODO: break into lines and remove parseLispLines function
 
     for (let p of source) {
         if (p === "\"") {
             if (!escape) {
                 quoted = !quoted
             }
-            acc += p
-            if (!quoted) {
-                tokens.push(acc)
-                acc = ""
-                continue
-            }
         }
 
         if (!quoted) {
-            tokens.push(p)
+            if (p === "(" || p === ")") {
+                parenCount += p === "(" ? 1 : -1
+                if (acc.length > 0) {
+                    tokens.push(acc)
+                    acc = ""
+                }
+                tokens.push(p)
+            } else if ((p === " " || p === "\n")) {
+                if (acc.length > 0) {
+                    tokens.push(acc)
+                    acc = ""
+                } else {
+                    // let whitespace and newline fallthrough to noop
+                }
+            } else {
+                acc += p
+            }
+        } else {
+            acc += p
         }
 
         if (p === "\\" && !escape) {
@@ -43,6 +54,9 @@ const tokenize = source => {
             escape = false
         }
 
+    }
+    if (parenCount !== 0) {
+        throw new Error(`missing ${Math.abs(parenCount)} ${parenCount > 0 ? 'trailing' : 'leading'} parentheses.`)
     }
     return tokens
 }
