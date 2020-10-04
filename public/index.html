@@ -1,0 +1,72 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" href="favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="JavaScript for Lisps exchange service" />
+    <title>Lisp Transpiler</title>
+
+    <!-- TODO: self host third-party sources -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/milligram/1.4.1/milligram.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.57.0/codemirror.min.css"
+    />
+    <link rel="stylesheet" href="https://codemirror.net/lib/codemirror.css" />
+    <link rel="stylesheet" href="./index.css" />
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.57.0/codemirror.min.js"></script>
+    <script src="https://codemirror.net/mode/commonlisp/commonlisp.js"></script>
+    <script src="https://codemirror.net/mode/javascript/javascript.js"></script>
+
+    <script type="module" async>
+      import "./component/x-javascript-editor.js";
+      import "./component/x-lisp-editor.js";
+      import "./service/api.js";
+    </script>
+    <style>
+      body {
+        background-color: #333;
+        color: #eee;
+      }
+      h2 {
+        text-align: center;
+      }
+      h3 {
+        margin: 0.6em 1.2em;
+      }
+      .grid-container {
+        background-color: #222;
+        display: grid;
+        grid-template-columns: minmax(200px, 440px) minmax(200px, 1fr);
+        gap: 0.6em;
+      }
+      .readOnly .CodeMirror {
+        background-color: #ddd;
+      }
+      .CodeMirror {
+        height: calc(100vh - 152px);
+      }
+      .innerwrap {
+        display: flex;
+        flex-direction: column;
+        flex-flow: column;
+      }
+      .hidden {
+          display: none;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h2>Lisp &#8594; JavaScript Transpiler</h2>
+    </header>
+    <div class="grid-container">
+      <x-lisp-editor></x-lisp-editor>
+      <x-javascript-editor></x-javascript-editor>
+    </div>
+  </body>
+</html>

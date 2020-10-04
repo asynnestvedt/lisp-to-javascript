@@ -1,0 +1,29 @@
+{
+  "name": "alan-backend-homework",
+  "version": "1.0.0",
+  "description": "demo that accepts lisps and gives javascripts",
+  "main": "server/index.js",
+  "directories": {
+    "doc": "doc"
+  },
+  "scripts": {
+    "test": "node test/server/lib/all.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/onfleet/alan-backend-homework.git"
+  },
+  "author": "Alan Synnestvedt",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/onfleet/alan-backend-homework/issues"
+  },
+  "homepage": "https://github.com/onfleet/alan-backend-homework#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "prettier": "^2.1.2"
+  },
+  "devDependencies": {
+    "eslint": "^7.10.0"
+  }
+}

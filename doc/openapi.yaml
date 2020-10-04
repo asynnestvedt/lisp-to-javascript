@@ -1,0 +1,82 @@
+openapi: 3.0.1
+info:
+  title: Lisp Transpiler
+  description: if you have too many lisps you can trade them in for javascripts here
+  version: 1.0.0
+servers:
+- url: localhost:3000/
+paths:
+  /:
+    get:
+      tags:
+      - html
+      summary: returns an html document with interactive lisp editor
+      responses:
+        "200":
+          description: OK
+  /isValidLisp:
+    post:
+      tags:
+      - api
+      summary: An endpoint to determine whether a string is a valid lisp program
+      requestBody:
+        content:
+          text/plain:
+            schema:
+              $ref: '#/components/schemas/body'
+        required: true
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Sorry but I cant understand your lisp
+  /convertToJS:
+    post:
+      tags:
+      - api
+      summary: An endpoint which given a valid lisp program as a string will return
+        the equivalent javascript. When the string supplied is not a valid program,
+        return an error.
+      requestBody:
+        content:
+          text/plain:
+            schema:
+              $ref: '#/components/schemas/body'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            text/plain:
+              schema:
+                type: string
+                x-content-type: text/plain
+        "400":
+          description: Sorry but I cant understand your lisp
+  /execute:
+    post:
+      tags:
+      - api
+      summary: An endpoint which given a valid lisp program as a string will attempt to convert
+        it the equivalent javascript and execute it returning any console logs
+      requestBody:
+        content:
+          text/plain:
+            schema:
+              $ref: '#/components/schemas/body'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            text/plain:
+              schema:
+                type: string
+                x-content-type: text/plain
+        "400":
+          description: Sorry but I cant understand your lisp
+components:
+  schemas:
+    body:
+      type: string
+      description: a lisp string
