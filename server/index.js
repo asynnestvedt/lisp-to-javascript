@@ -27,7 +27,7 @@ app.post("/isValidLisp", function (req, res) {
 app.post("/convertToJS", function (req, res) {
     let js = jspile.transpile(parser.parse(req.body.trim()))
     if (js !== "") {
-        try { js = prettier.format(js) }
+        try { js = prettier.format(js, {parser: "babel"}) }
         catch (e) { /** noop */ }
         res.status(200).send(js)
     } else {
