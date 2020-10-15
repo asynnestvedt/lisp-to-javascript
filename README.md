@@ -1,4 +1,4 @@
-# Lisp transpiler
+# lisp-to-javascript
 ## Overview
 
 if you have too many lisps you can trade them in for javascripts here... this is a lisp to javascript compiler
@@ -247,7 +247,8 @@ An endpoint which given a valid lisp program as a string will attempt to convert
  * can use javascript array and object literals (no function literals due to parens being interpreted as lisp lists)
  * plus(+) operator can be used for string concatenation
  * tests are very incomplete
+ * unlikely, but it might blow the stack if you have a lot of nested lisp and are running this on a calculator
 
-While creating this I encountered a couple of minor challenges and a couple of larger ones. First I tried to use generator functions to step through the list heirarchy but couldn't fully wrap my head around it so I went with recursion. Next I spent some time trying to create a regex that would preserve whitespace in strings but ended up with a loop that tokenized in a single pass. The most challenging part of this project has been trying to comprehend the boundary of syntax between the lispyness and javascript. There are too many combinations to check manually so I think if I had more free time, I'd make a script that generates tests for every combination of macros, operators and literals (2 levels deep), as well as systematically testing for injected javascript.
+While creating this I encountered a few challenges... I spent some time trying to create a regex that would preserve whitespace in strings but ended up with a loop that tokenized in a single pass. The most difficult part of this project has been trying to reason about the boundary of syntax between the lispyness and javascript. There are too many combinations to check manually so I think if I had more free time, I'd make a script that generates tests for every combination of macros, operators and literals (2 levels deep), as well as systematically testing for injected javascript. Alternatively, I could just block the use of javascript keywords but that wouldn't be any fun.
 
-a major blunder in this implementation was to put all the parsing logic in the transpiling library. If I ever rewrite this, it will be in golang and the parser will perform the syntax validation and produce a far more robust AST.
+a blunder in this implementation was to put all the parsing logic in the transpiling library. If I ever rewrite this, the parser will perform the syntax validation and produce a more robust AST so that it can more easily target other destination languages.
