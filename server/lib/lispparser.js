@@ -56,7 +56,7 @@ const tokenize = source => {
 
     }
     if (parenCount !== 0) {
-        throw new Error(`missing ${Math.abs(parenCount)} ${parenCount > 0 ? 'trailing' : 'leading'} parentheses.`)
+        throw new Error(`missing ${Math.abs(parenCount)} ${parenCount > 0 ? "trailing" : "leading"} parentheses.`)
     }
     return tokens
 }
