@@ -5,7 +5,7 @@ if you have too many lisps you can trade them in for javascripts here... this is
 
 The demo contains a lisp parser that is has limited compatibility with a subset of CommonLisp. in the server/libs folder you'll also find a JavaScript compiler library, both of which are exposed by an express API. The front-end consists of DIY web components tied together with a "redux like" pub/sub hub. Served @ http://localhost:3000.
 
-![screenshot](https://raw.githubusercontent.com/onfleet/alan-backend-homework/master/public/ui-cap.png?token=AATXE7FAMGOHGY7HEDDWYW27QJNDY)
+![screenshot](https://raw.githubusercontent.com/asynnestvedt/lisp-to-javascript/main/public/ui-cap.png)
 
 ### Getting Started
 To install the server:
