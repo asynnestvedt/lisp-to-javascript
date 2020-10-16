@@ -70,8 +70,7 @@ const parseLispLines = (source) => {
     let c = last = 0
     const lines = []
     for (let i = 0; i < source.length; ++i) {
-        if (source[i] === "(") { c++ }
-        if (source[i] === ")") { c-- }
+        if (source[i] === "(") { c++ } else if (source[i] === ")") { c-- }
         if (i > 0 && c === 0) {
             lines.push(source.slice(last, i + 1))
         }

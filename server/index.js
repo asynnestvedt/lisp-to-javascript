@@ -6,12 +6,25 @@ const util = require("util")
 const vm = require("vm")
 const path = require("path")
 
+
 const parser = require("./lib/lispparser")
 const jspile = require("./lib/jspile")
+const Cache = require("./lib/cache")
+const cache = new Cache()
 
 app.use(bodyParser.text())
-// eslint-disable-next-line no-undef
 app.use("/", express.static(path.join(__dirname, "../public")))
+
+
+/**
+ * if req has body get hash and attach to req
+ */
+app.use((req, res, next)=>{
+    if (typeof req.body === "string") {
+        req.bodyhash = Cache.hash(req.body)
+    }
+    next()
+})
 
 app.post("/isValidLisp", function (req, res) {
     // TODO: move more of the AST idenitifcation from transpiler to parser.
@@ -25,14 +38,23 @@ app.post("/isValidLisp", function (req, res) {
 })
 
 app.post("/convertToJS", function (req, res) {
-    let js = jspile.transpile(parser.parse(req.body.trim()))
-    if (js !== "") {
-        try { js = prettier.format(js, {parser: "babel"}) }
-        catch (e) { /** noop */ }
-        res.status(200).send(js)
+    const cached = cache.get(req.bodyhash)
+    let js
+    if (!cached) {
+        js = jspile.transpile(parser.parse(req.body.trim()))
+        if (js !== "") {
+            try {
+                js = prettier.format(js, {parser: "babel"})
+                cache.set(req.bodyhash, js)
+            }
+            catch (e) { /** noop */ }
+        } else {
+            res.status(400).send()
+        }
     } else {
-        res.status(400).send()
+        console.log("cache hit")
     }
+    res.status(200).send(cached || js)
 })
 
 app.post("/execute", function (req, res) {

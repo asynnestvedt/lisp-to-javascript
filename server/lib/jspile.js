@@ -8,9 +8,7 @@ function processDefun(ast) {
     acc += `function ${transpile(parts.shift())}`
     acc += `(${transpile(parts.shift())})`
     let body = ""
-    // eslint-disable-next-line no-undef
     while ((p = parts.shift()) !== undefined) {
-        // eslint-disable-next-line no-undef
         body += transpile(p)
     }
     return acc + `{${body}}`
