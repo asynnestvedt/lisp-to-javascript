@@ -20,7 +20,7 @@ module.exports = class Cache {
     autopurge() {
         for (const [key, value] of Object.entries(this.store)) {
             if(value.e <= Cache.epoch()) {
-                delete this.store(key)
+                delete this.store[key]
             }
         }
     }
