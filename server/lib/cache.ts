@@ -1,23 +1,23 @@
-const crypto = require("crypto")
+import crypto from "crypto"
 
-module.exports = class Cache {
+export default class Cache {
+    store: {[key: string]: any} = {}
     constructor() {
-        this.store = {}
         setInterval(() => {
             this.autopurge()
         }, 1000)
     }
 
-    get(key){
+    get(key: string): any{
         return (this.store[key] || {v: undefined})["v"]
     }
 
-    set(key, val, expireSeconds = 60) {
+    set(key: string, val: any, expireSeconds: number = 60): void {
         const expire = Cache.epoch() + expireSeconds
         this.store[key] = { v: val, e: expire }
     }
 
-    autopurge() {
+    autopurge(): void {
         for (const [key, value] of Object.entries(this.store)) {
             if(value.e <= Cache.epoch()) {
                 delete this.store[key]
@@ -25,11 +25,11 @@ module.exports = class Cache {
         }
     }
 
-    static hash(string) {
-        return crypto.createHash("sha256").update(string).digest("hex")
+    static hash(plain: string): string {
+        return crypto.createHash("sha256").update(plain).digest("hex")
     }
 
-    static epoch() {
+    static epoch(): number {
         return Math.round((new Date).getTime() / 1000)
     }
 }

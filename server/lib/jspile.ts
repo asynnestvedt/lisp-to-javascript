@@ -1,20 +1,25 @@
+type Atom = {t:string, v:string} | string | boolean | number
+interface IAST extends Array<AST | Atom> {}
+type AST = Atom[] | IAST;
+
 /***************************************************************
  * Keyword Processors
  **************************************************************/
 
-function processDefun(ast) {
+export function processDefun(ast:AST): string {
     const parts = ast.slice(1)
-    let acc = ""
+    let acc  = "",
+        body = "",
+        p
     acc += `function ${transpile(parts.shift())}`
     acc += `(${transpile(parts.shift())})`
-    let body = ""
     while ((p = parts.shift()) !== undefined) {
         body += transpile(p)
     }
     return acc + `{${body}}`
 }
 
-function processIf(ast) {
+export function processIf(ast:AST): string {
     const parts = ast.slice(1)
     let acc = ""
     acc += `if(${transpile(parts[0])}){${transpile(parts[1])}}`
@@ -24,10 +29,10 @@ function processIf(ast) {
     return acc
 }
 
-function processLambda(ast) {
-    const parts = ast.slice(1)
+export function processLambda(ast:AST): string {
+    const parts = ast.slice(1) || []
     let acc = ""
-    acc += `(${parts[0].map(p => p.v).join(",")})=>`
+    acc += `(${(parts[0] || []).map(p => p.v).join(",")})=>`
     acc += `{return ${transpile(parts[1])}}`
     if (parts[2]) {
         acc += `(${transpile(parts[2])})`
@@ -35,13 +40,13 @@ function processLambda(ast) {
     return acc
 }
 
-function processLet(ast) {
+export function processLet(ast:AST): string {
     const parts = ast[1]
     const assigned = parts.map(pair => `${pair[0].v}=${pair[1].v}`)
     return `{const ${assigned.join(",")};${transpile(ast.slice(2))}}`
 }
 
-function processLoop(ast) {
+export function processLoop(ast:AST): string {
     // loop - for - across - do 
     if (ast[1].v === "for" && ast[3].v === "across" && ast[5].v === "do") {
         return `for(let ${ast[2].v} of ${ast[4].v}) {${transpile(ast.slice(6))}}`
@@ -52,7 +57,7 @@ function processLoop(ast) {
     }
 }
 
-function processOperator(ast) {
+export function processOperator(ast:AST): string {
     const operands = ast.slice(1)
     const atom = ast[0]
     let results = operands.map(o => {
@@ -61,11 +66,11 @@ function processOperator(ast) {
     return `(${results.join(atom.v.replace("=", "==="))})`
 }
 
-function processSetq(ast) {
+export function processSetq(ast:AST): string {
     return `const ${ast[1].v}=${transpile(ast[2])};`
 }
 
-function processWrite(ast) {
+export function processWrite(ast:AST): string {
     const parts = ast.slice(1)
     return `console.log(${transpile(parts[0])});`
 }
@@ -86,7 +91,7 @@ const processors = {
  * Transpile
  ******************************************************************/
 
-function transpileList(ast) {
+export function transpileList(ast: AST): string {
     let res = ""
     for (let i = 0; i < ast.length; ++i) {
         /*** check for a processor of that type */
@@ -104,7 +109,7 @@ function transpileList(ast) {
     return res
 }
 
-function transpile(ast) {
+export function transpile(ast: AST): string {
     if (Array.isArray(ast)) {
         return transpileList(ast)
     }
@@ -118,7 +123,7 @@ function transpile(ast) {
  * wraps transpile in try/catch
  * @param {Array} ast 
  */
-function transpileSafe(ast) {
+export function transpileSafe(ast:AST): string {
     try {
         return transpile(ast)
     } catch (e) {
@@ -127,4 +132,4 @@ function transpileSafe(ast) {
     }
 }
 
-module.exports = Object.assign({ transpile: transpileSafe }, processors)
+export default Object.assign({ transpile: transpileSafe }, processors)

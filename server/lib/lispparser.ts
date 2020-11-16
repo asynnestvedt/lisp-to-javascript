@@ -1,20 +1,26 @@
 const RESERVED_WORDS = ["if", "lambda", "defun", "let", "write", "setq", "loop"]
 const OPERATORS = ["+", "-", "*", "/", "=", "<", ">"]
 
+interface ASTNode {
+    t: string,
+    v: string | number | boolean
+}
+
 /**
  * remove comments from source
  * @param {string} source 
  */
-const strip = source => source.replace(/^\s+?;.*\n?/m, "")
+const strip = (source:string):string => source.replace(/^\s+?;.*\n?/m, "")
 
 /**
  * break into array of control chars, symbols and keywords
  * @param {string} source 
  */
-const tokenize = source => {
+const tokenize = (source: string): string[] => {
     const tokens = []
     let acc = ""
-    let escape = quoted = false
+    let escape = false,
+        quoted = false
     let parenCount = 0
 
     // TODO: break into lines and remove parseLispLines function
@@ -66,8 +72,9 @@ const tokenize = source => {
  * returns 2d array from 1d array when multiple "root list" lines are present
  * @param {array} source 
  */
-const parseLispLines = (source) => {
-    let c = last = 0
+const parseLispLines = (source: string): string[] => {
+    let  c = 0,
+      last = 0
     const lines = []
     for (let i = 0; i < source.length; ++i) {
         if (source[i] === "(") { c++ } else if (source[i] === ")") { c-- }
@@ -84,7 +91,7 @@ const parseLispLines = (source) => {
  * @param {*} source 
  * @param {*} list 
  */
-const makeAst = (source, list = []) => {
+const makeAst = (source: string[], list:any[] = []): any[] => {
     const token = source.shift()
     if (token === undefined) {
         return list.pop()
@@ -103,7 +110,7 @@ const makeAst = (source, list = []) => {
  * build ast node with token type info
  * @param {*} token 
  */
-const applyType = token => {
+const applyType = (token:string): ASTNode => {
     const isNumber = (token) => !isNaN(parseFloat(token))
     const typedNumber = (token) => {
         const f = parseFloat(token)
